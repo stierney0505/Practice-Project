@@ -3,7 +3,7 @@ const path = require('path');
 const test2Routes = require('./router/test2.js').test2Routes; //Gets the additional routes from the test2.js file
 
 const app = express();
-const PORT = 3000; //Currently the port is hardcoded at 3000, can be changed if we decide to utilize a .env file
+const PORT = 5000; //Currently the port is hardcoded at 3000, can be changed if we decide to utilize a .env file
   
 
 app.listen(PORT, (error) =>{
