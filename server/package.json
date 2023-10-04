@@ -1,0 +1,24 @@
+{
+  "name": "Senior Capston Practice Project",
+  "version": "1.0.0",
+  "description": "A web application for pracitce within our capstone project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stierney0505/Practice-Project.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stierney0505/Practice-Project/issues"
+  },
+  "homepage": "https://github.com/stierney0505/Practice-Project#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
