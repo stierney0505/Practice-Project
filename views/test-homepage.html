@@ -3,7 +3,32 @@
 <head> <!--Base Points to localhost-->
     <meta charset="utf-8">
     <title>Merely A Test</title>
-    <link rel="stylesheet" href="http://127.0.0.1:3000/sample.css">
+    <link rel="stylesheet" href="/sample.css">
+    <script>
+        function includeJWTInHeaders(endpoint) {
+            // Check if the JWT is available
+            let jwt = localStorage.getItem('jwtToken');
+            if (jwt) {
+                // Add the JWT to the headers
+                fetch(endpoint, {
+                    "Content-Type": "application/json",
+                    method: 'GET', // or 'POST', 'PUT', etc. depending on your request type
+                    headers: {
+                        'Authorization': jwt
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Process the response data
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                console.error('JWT not available');
+            }
+        }
+
+    </script>
+
 </head>
 
 <body>
@@ -13,9 +38,44 @@
     </div>
     <div>
         <h2>Here is one link to bring you to the something and another for a 404 error!</h2>
-        <a href="http://127.0.0.22:3000/test2">A PAGE WITH A CLOCK!</a> <br>
-        <a href="http://127.0.0.22:3000/error">404 ERROR!</a> <br>
+        <a href="#" onclick="event.preventDefault(); includeJWTInHeaders('/test2')">A PAGE WITH A CLOCK!</a> <br>
+        <a href="/error">404 ERROR!</a> <br>
     </div>
+    <form id="loginForm" action="/login" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission behavior
+            var formData = new FormData(this);
+
+            fetch('http://127.0.0.22:5000/login', {
+                method: 'POST',
+                headers: {
+                    username: 'admin',
+                    password: 'password1',
+                },
+                body: {
+                    username: 'admin',
+                    password: 'password1',
+                },
+            })
+                .then(response => response.json()) // Assuming server returns JSON with the JWT
+                .then(data => {
+                    // Handle the JWT in the response data
+                    console.log('Received JWT:', data.jwt);
+
+                    // You can now use the JWT in your JavaScript code
+                    localStorage.setItem('jwt', JSON.stringify(yourTokenresponseFromExpress));
+                    // For example, you can store it in localStorage or a cookie for future use
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 
 </html>

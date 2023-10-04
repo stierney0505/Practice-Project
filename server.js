@@ -1,10 +1,24 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const test2Routes = require('./router/test2.js').test2Routes; //Gets the additional routes from the test2.js file
+const login = require('./router/login.js').login;
+const mongoose = require('mongoose');
+require('dotenv').config()
 
 const app = express();
-const PORT = 5000; //Currently the port is hardcoded at 3000, can be changed if we decide to utilize a .env file
+const PORT = process.env.PORT || 5000; //Currently the port is hardcoded at 3000, can be changed if we decide to utilize a .env file
   
+
+mongoose.connect(
+    process.env.EC2_URL, 
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }
+);
+
+
 
 app.listen(PORT, (error) =>{
     if(!error)
@@ -13,6 +27,11 @@ app.listen(PORT, (error) =>{
         console.log("Error occurred, server can't start", error);
     }
 );
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Parse application/json
+app.use(bodyParser.json());
 
 //Sends the home page 
 app.get('/', (req, res) => {
@@ -29,6 +48,8 @@ app.use('/static', express.static(path.join(__dirname, 'node_modules')));
 /*activates the routes from the test2.js file under directory /test2. So all routes defined in test2.js are accessed by -> <baseurl> + /test2/ + <test2.js route> 
 For example the two routes in test2.js can be accessed by url http://127.0.0.22:3000/test2 and http://127.0.0.22:3000/test2/helloworld*/
 app.use('/test2', test2Routes); 
+
+app.use('/login', login);
 
 //This is the 404 Route. THIS MUST REMAIN LAST IT CATCHES ALL OTHER GET REQUESTS 
 app.get('*', function(req, res){
