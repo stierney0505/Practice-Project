@@ -9,7 +9,7 @@
             let jwt = localStorage.getItem('jwt');
             const customHeaders = new Headers({
                 'Authorization': jwt,
-                "Content-Type": "text/html"
+                'Content-Type': "text/html"
             });
 
             try {
@@ -51,21 +51,25 @@
         <input type="password" id="password" name="password"><br><br>
         <input type="submit" value="Submit">
     </form>
+    <p id="loginFailure"></p>
+    <p id="loginSuccess"></p>
     <script>
         document.getElementById('loginForm').addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent default form submission behavior
             var formData = new FormData(this);
+            let user = document.getElementById("username").value;
+            let pass = document.getElementById("password").value;
 
-            fetch('http://127.0.0.22:5000/login', {
+            fetch('/login', {
                 method: 'POST',
                 headers: {
-                    username: 'admin',
-                    password: 'password1',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: {
-                    username: 'admin',
-                    password: 'password1',
-                },
+                body: JSON.stringify({
+                    username: user,
+                    password: pass,
+                }),
             })
                 .then(response => response.json()) // Assuming server returns JSON with the JWT
                 .then(data => {
@@ -73,7 +77,17 @@
                     console.log('Received JWT:', data.token);
 
                     // You can now use the JWT in your JavaScript code
-                    localStorage.setItem('jwt', data.token);
+                    if (data.token){
+                        localStorage.setItem('jwt', data.token);
+                        document.getElementById("username").value = "";
+                        document.getElementById("password").value = "";
+                        document.getElementById("loginSuccess").innerHTML = "Login Successful";
+                        document.getElementById("loginFailure").innerHTML = "";
+                    }
+                    else {
+                        document.getElementById("loginFailure").innerHTML = "Invalid Login information";
+                        document.getElementById("loginSuccess").innerHTML = "";
+                    }
                     // For example, you can store it in localStorage or a cookie for future use
                 })
                 .catch(error => console.error('Error:', error));

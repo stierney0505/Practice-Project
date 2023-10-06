@@ -11,3 +11,7 @@ p {
 h1 {
     color: grey;
 }
+
+#loginFailure{
+    color:red;
+}

@@ -3,8 +3,6 @@ const router = express.Router();
 const path = require('path');
 const auth = require('../middleware/authentication.js').authToken;
 
-
-
 //This send the test2-page 
 router.get('/', auth, (req, res) => { 
     res.sendFile(path.join(__dirname, '../views/test2-views/test2-page.html'));
