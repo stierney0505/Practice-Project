@@ -1,18 +1,22 @@
+<!DOCTYPE html>
 <html lang="en">
-
-<head> <!--Base Points to localhost-->
-    <meta charset="utf-8">
-    <title>Merely A Second Test</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
     <link rel="stylesheet" href="/sample.css">
-    <script src="/updateTime.js"></script>
+    <link rel="stylesheet" href="/topnav.css">
+    <script>
+        function addName(){
+            let user = localStorage.getItem('username');
+            document.getElementById("greeting").innerHTML = "Hello, " + user;
+        }
+    </script> 
 </head>
-
-<body>
-    <div>
-        <h1>HELLO WORLD, FOR THE SECOND TIME</h1>
-        <h2>THERE EXISTS NO MORE PAGES</h2>
-        <p id="current-time">THIS IS TEXT WOW, IT USES CSS FROM THE AWS SERVER!</p>
+<body onmouseenter="addName()">
+    <div class="topnav" onmouseenter="addName()">
+        <a href="/" onmouseenter="addName()">Home</a>
     </div>
+    <h1 id="greeting" onmouseenter="addName()">Hello, user</h1>  
 </body>
-
 </html>

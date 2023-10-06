@@ -4,55 +4,48 @@
     <meta charset="utf-8">
     <title>Merely A Test</title>
     <link rel="stylesheet" href="/sample.css">
+    <link rel="stylesheet" href="/topnav.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         async function makeRequest(endpoint) {
             let jwt = localStorage.getItem('jwt');
-            const customHeaders = new Headers({
-                'Authorization': jwt,
-                'Content-Type': "text/html"
+
+            const customHeaders = {
+                'authorization': jwt,
+                'Content-Type': "text/html",
+            };
+
+            $.ajax({
+                url: endpoint,
+                method: 'GET',
+                headers: customHeaders,
+                success: function (data) {
+                    document.body.innerHTML = data;
+                    console.log('Response:', data);
+                    window.history.pushState({}, '', endpoint);
+                },
             });
-
-            try {
-                const response = await fetch(endpoint, {
-                    method: 'GET',
-                    headers: customHeaders
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.text();
-                document.body.innerHTML = data;
-                console.log('Response:', data);
-                window.history.pushState({}, '', endpoint);
-            } catch (error) {
-                console.error('Error:', error);
-            }
         }
     </script>
 
 </head>
 
 <body>
-    <div>
-        <h1>HELLO WORLD</h1>
-        <p>I DON'T DO FRONT END!</p><br>
+    <div class="topnav">
+        <a href="/">Home</a>
     </div>
-    <div>
-        <h2>Here is one link to bring you to the something and another for a 404 error!</h2>
-        <a href="#" onclick="event.preventDefault(); makeRequest('/test2')">A PAGE WITH A CLOCK!</a> <br>
-        <a href="/error">404 ERROR!</a> <br>
+    <div id="centered">
+        <h1>Login Page</h1>
+        <form id="loginForm" action="/login" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username"><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+        <p id="loginFailure"></p>
+        <p id="loginSuccess"></p>
     </div>
-    <form id="loginForm" action="/login" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username"><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password"><br><br>
-        <input type="submit" value="Submit">
-    </form>
-    <p id="loginFailure"></p>
-    <p id="loginSuccess"></p>
     <script>
         document.getElementById('loginForm').addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent default form submission behavior
@@ -77,12 +70,14 @@
                     console.log('Received JWT:', data.token);
 
                     // You can now use the JWT in your JavaScript code
-                    if (data.token){
+                    if (data.token) {
                         localStorage.setItem('jwt', data.token);
+                        localStorage.setItem('username', user);
                         document.getElementById("username").value = "";
                         document.getElementById("password").value = "";
                         document.getElementById("loginSuccess").innerHTML = "Login Successful";
                         document.getElementById("loginFailure").innerHTML = "";
+                        makeRequest("/test2");
                     }
                     else {
                         document.getElementById("loginFailure").innerHTML = "Invalid Login information";

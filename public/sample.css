@@ -15,3 +15,11 @@ h1 {
 #loginFailure{
     color:red;
 }
+
+#centered{
+    width: 20%;
+    height: 500px;
+    /* Center horizontally*/
+    margin: auto;
+    text-align: center;
+}
