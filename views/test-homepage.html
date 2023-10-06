@@ -5,28 +5,31 @@
     <title>Merely A Test</title>
     <link rel="stylesheet" href="/sample.css">
     <script>
-        function includeJWTInHeaders(endpoint) {
-            // Check if the JWT is available
-            let jwt = localStorage.getItem('jwtToken');
-            if (jwt) {
-                // Add the JWT to the headers
-                fetch(endpoint, {
-                    "Content-Type": "application/json",
-                    method: 'GET', // or 'POST', 'PUT', etc. depending on your request type
-                    headers: {
-                        'Authorization': jwt
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Process the response data
-                    })
-                    .catch(error => console.error('Error:', error));
-            } else {
-                console.error('JWT not available');
+        async function makeRequest(endpoint) {
+            let jwt = localStorage.getItem('jwt');
+            const customHeaders = new Headers({
+                'Authorization': jwt,
+                "Content-Type": "text/html"
+            });
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'GET',
+                    headers: customHeaders
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.text();
+                document.body.innerHTML = data;
+                console.log('Response:', data);
+                window.history.pushState({}, '', endpoint);
+            } catch (error) {
+                console.error('Error:', error);
             }
         }
-
     </script>
 
 </head>
@@ -38,7 +41,7 @@
     </div>
     <div>
         <h2>Here is one link to bring you to the something and another for a 404 error!</h2>
-        <a href="#" onclick="event.preventDefault(); includeJWTInHeaders('/test2')">A PAGE WITH A CLOCK!</a> <br>
+        <a href="#" onclick="event.preventDefault(); makeRequest('/test2')">A PAGE WITH A CLOCK!</a> <br>
         <a href="/error">404 ERROR!</a> <br>
     </div>
     <form id="loginForm" action="/login" method="POST">
@@ -67,10 +70,10 @@
                 .then(response => response.json()) // Assuming server returns JSON with the JWT
                 .then(data => {
                     // Handle the JWT in the response data
-                    console.log('Received JWT:', data.jwt);
+                    console.log('Received JWT:', data.token);
 
                     // You can now use the JWT in your JavaScript code
-                    localStorage.setItem('jwt', JSON.stringify(yourTokenresponseFromExpress));
+                    localStorage.setItem('jwt', data.token);
                     // For example, you can store it in localStorage or a cookie for future use
                 })
                 .catch(error => console.error('Error:', error));

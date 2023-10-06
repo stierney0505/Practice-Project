@@ -31,7 +31,7 @@ function ensureCorrectUser(req, res, next) {
 
 function generateAccessToken(username) {
     const payload = { username: username }
-    return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '10m' });
+    return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '10d' });
 }
 
 module.exports.generateAccess = generateAccessToken;

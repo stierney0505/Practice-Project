@@ -10,15 +10,6 @@ const app = express();
 const PORT = process.env.PORT || 5000; //Currently the port is hardcoded at 3000, can be changed if we decide to utilize a .env file
   
 
-mongoose.connect(
-    process.env.EC2_URL, 
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    }
-);
-
-
 
 app.listen(PORT, (error) =>{
     if(!error)
