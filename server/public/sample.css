@@ -1,0 +1,25 @@
+h2 {
+    color: blueviolet;
+}
+
+p {
+    font-size: 26px;
+    text-align: right;
+    color: blue;
+}
+
+h1 {
+    color: grey;
+}
+
+#loginFailure{
+    color:red;
+}
+
+#centered{
+    width: 20%;
+    height: 500px;
+    /* Center horizontally*/
+    margin: auto;
+    text-align: center;
+}

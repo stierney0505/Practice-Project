@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/sample.css">
+    <link rel="stylesheet" href="/topnav.css">
+    <script>
+        function addName(){
+            let user = localStorage.getItem('username');
+            document.getElementById("greeting").innerHTML = "Hello, " + user;
+        }
+    </script> 
+</head>
+<body onmouseenter="addName()">
+    <div class="topnav" onmouseenter="addName()">
+        <a href="/" onmouseenter="addName()">Home</a>
+    </div>
+    <h1 id="greeting" onmouseenter="addName()">Hello, user</h1>  
+</body>
+</html>
