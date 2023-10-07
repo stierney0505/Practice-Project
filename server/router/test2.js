@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+
 const auth = require('../middleware/authentication.js').authToken;
 
 //This send the test2-page 
